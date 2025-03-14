@@ -15,9 +15,9 @@ class InstanciaEstacionServicioModif():
         datos = pd.read_excel(nombre_archivo)
 
         # lista en llamados_por_hora son las C_h
-        self.llamados_por_hora = (2 * datos.iloc[:, 1]).tolist()
+        self.llamados_por_hora = datos.iloc[:, 1].tolist()
 
-        self.cantidad_max_empleados = sum(self.llamados_por_hora)
+        self.cantidad_max_empleados = 50
 
 def cargar_instancia():
 
@@ -89,7 +89,7 @@ def agregar_elementos_modif(prob, instancia):
     for i in range(cantMaxEmpleados):
         expr = sum(x_dict[i][h] for h in range(164, 168))
         prob.addCons(expr == 0)
-    '''
+
     #Agregamos la restricción opcional del inciso 4: cada empleado contratado arranca todos sus turnos a la misma hora
     w_dict = {}
 
@@ -97,31 +97,14 @@ def agregar_elementos_modif(prob, instancia):
     for i in range(cantMaxEmpleados):
         w_dict[i] = {}
         for h in range(24): #Las horas de 0 a 23
-            w_dict[i][h] = prob.addVar(vtype='I', name=f"w_{i}_{h}", lb=0)
+            w_dict[i][h] = prob.addVar(vtype='B', name=f"w_{i}_{h}", lb=0, ub=1)
 
     #Definimos cada w_ih
     for i in range(cantMaxEmpleados):
-        suma_x_i_hd = 0
         for h in range(24):
-            for d in range(int(cantHoras/24)):
-                suma_x_i_hd += x_dict[i][h + 24*d]
-        prob.addCons(w_dict[i][h] == suma_x_i_hd)
+            suma_x_i_hd = sum(x_dict[i][h + 24 * d] for d in range(cantHoras // 24))  # Sumamos los turnos de cada día
+            prob.addCons(5 * w_dict[i][h] == suma_x_i_hd)
 
-    #Pero ahora queremos que o bien todos los turnos arranquen a esa hora o bien no arranque ninguno
-    delta_dict = {}
-    for i in range(cantMaxEmpleados):
-        delta_dict[i] = {}
-        for h in range(cantHoras):
-            delta_dict[i][h] = prob.addVar(vtype='B', name=f"delta_{i}_{h}", lb=0, ub=1)
-
-    #Sean M1 y M2 las constantes para la disyunción. Los valores podrían haber sido otros pero estos cumplen.
-    m1 = 5
-    m2 = 0.5
-    for i in range (cantMaxEmpleados):
-        for h in range(24): #ya que las w_ih son para cada hora del día nomás
-            prob.addCons(w_dict[i][h] <= 0 + (1 - delta_dict[i][h]) * m1)
-            prob.addCons(w_dict[i][h] <= 5 + delta_dict[i][h] * m2)
-    '''
     #FUNCION OBJETIVO
     prob.setObjective(sum(e_dict[i] for i in e_dict) , "minimize") #Luego del inciso opcional, se mantiene esta función objetivo
 
