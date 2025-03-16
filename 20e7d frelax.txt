@@ -1,0 +1,47 @@
+(round 2, fast)       248 del vars, 288 del conss, 0 add conss, 248 chg bounds, 157 chg sides, 0 chg coeffs, 0 upgd conss, 0 impls, 6620 clqs
+(round 3, exhaustive) 248 del vars, 288 del conss, 0 add conss, 248 chg bounds, 157 chg sides, 0 chg coeffs, 6788 upgd conss, 0 impls, 6620 clqs
+(round 4, exhaustive) 248 del vars, 296 del conss, 0 add conss, 248 chg bounds, 157 chg sides, 0 chg coeffs, 6788 upgd conss, 0 impls, 6620 clqs
+   (2.0s) probing: 531/3780 (14.0%) - 0 fixings, 0 aggregations, 3280 implications, 0 bound changes
+   (2.0s) probing aborted: 50/50 successive totally useless probings
+   (2.0s) symmetry computation started: requiring (bin +, int +, cont +), (fixed: bin -, int -, cont -)
+   (2.0s) symmetry computation finished: 19 generators found (max: 1500, log10 of symmetry group size: 10.0) (symcode time: 0.00)
+dynamic symmetry handling statistics:
+   orbitopal reduction:        1 components: 189x20
+   orbital reduction:         no components
+   lexicographic reduction:   no permutations
+handled 1 out of 1 symmetry components
+presolving (5 rounds: 5 fast, 3 medium, 3 exhaustive):
+ 248 deleted vars, 296 deleted constraints, 0 added constraints, 248 tightened bounds, 0 added holes, 157 changed sides, 0 changed coefficients
+ 0 implications, 9900 cliques
+presolved problem has 3780 variables (3780 bin, 0 int, 0 impl, 0 cont) and 7280 constraints
+     80 constraints of type <knapsack>
+   6620 constraints of type <setppc>
+    500 constraints of type <linear>
+     80 constraints of type <logicor>
+transformed objective value is always integral (scale: 1)
+Presolving Time: 2.00
+
+SCIP Status        : problem is solved [optimal solution found]
+Solving Time (sec) : 15153.00
+Solving Nodes      : 302487
+Primal Bound       : +1.10000000000000e+01 (7 solutions)
+Dual Bound         : +1.10000000000000e+01
+Gap                : 0.00 %
+Estado de optimización: optimal
+
+Horarios de inicio de turnos por empleado:
+          Turno 1  Turno 2  Turno 3  Turno 4  Turno 5
+Empleado                                             
+0              20       44       68       92      140
+1              19       67       91      115      163
+2              14       38       62       86      158
+3              14       62       86      110      134
+5              30       78      102      126      150
+6               4       28       52       76      124
+7              15       39       63       87      111
+8               0       24       72       96      120
+9               2       50       74       98      146
+10              9       33       57      105      153
+12              8       56       80      104      128
+
+Cantidad de trabajadores necesarios para atender todas las llamadas: 11

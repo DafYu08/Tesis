@@ -17,7 +17,7 @@ class InstanciaEstacionServicioModif():
         # lista en llamados_por_hora son las C_h
         self.llamados_por_hora = datos.iloc[:, 1].tolist()
 
-        self.cantidad_max_empleados = 50
+        self.cantidad_max_empleados = 20
 
 def cargar_instancia():
 
@@ -155,6 +155,7 @@ def mostrar_resultados(prob, instancia, x_dict, e_dict):
     # Mostrar cantidad total de trabajadores necesarios
     print(f"\nCantidad de trabajadores necesarios para atender todas las llamadas: {cantEmp}")
 
+
 def main():
     # Lectura de datos desde el archivo de entrada
     instancia = cargar_instancia()
@@ -167,6 +168,7 @@ def main():
     empleados_necesarios = prob.getObjVal()
     # Mostrar los resultados
     mostrar_resultados(prob, instancia, x_dict, e_dict)
+
 
 if __name__ == '__main__':
     main()

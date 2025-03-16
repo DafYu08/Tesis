@@ -1,8 +1,7 @@
-import sys
+
 import pandas as pd
 from pyscipopt import Model, scip, quicksum
-from recordclass import recordclass
-import openpyxl
+
 
 TOLERANCE = 10e-6
 
