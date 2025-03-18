@@ -1,0 +1,70 @@
+presolving:
+(round 1, fast)       336 del vars, 356 del conss, 0 add conss, 336 chg bounds, 331 chg sides, 0 chg coeffs, 0 upgd conss, 0 impls, 13420 clqs
+(round 2, exhaustive) 336 del vars, 356 del conss, 0 add conss, 336 chg bounds, 331 chg sides, 0 chg coeffs, 13756 upgd conss, 0 impls, 13420 clqs
+   (1.0s) probing: 531/7220 (7.4%) - 0 fixings, 0 aggregations, 6720 implications, 0 bound changes
+   (1.0s) probing aborted: 50/50 successive totally useless probings
+   (1.0s) symmetry computation started: requiring (bin +, int +, cont +), (fixed: bin -, int -, cont -)
+   (1.0s) symmetry computation finished: 19 generators found (max: 1500, log10 of symmetry group size: 10.0) (symcode time: 0.00)
+dynamic symmetry handling statistics:
+   orbitopal reduction:        1 components: 361x20
+   orbital reduction:         no components
+   lexicographic reduction:   no permutations
+handled 1 out of 1 symmetry components
+presolving (3 rounds: 3 fast, 2 medium, 2 exhaustive):
+ 336 deleted vars, 361 deleted constraints, 0 added constraints, 336 tightened bounds, 0 added holes, 331 changed sides, 0 changed coefficients
+ 0 implications, 20140 cliques
+presolved problem has 7220 variables (7220 bin, 0 int, 0 impl, 0 cont) and 14251 constraints
+    163 constraints of type <knapsack>
+  13420 constraints of type <setppc>
+    500 constraints of type <linear>
+    168 constraints of type <logicor>
+transformed objective value is always integral (scale: 1)
+Presolving Time: 1.00
+
+presolving:
+(round 1, fast)       10 del vars, 25 del conss, 0 add conss, 0 chg bounds, 0 chg sides, 19 chg coeffs, 0 upgd conss, 0 impls, 21171 clqs
+(round 2, exhaustive) 10 del vars, 25 del conss, 0 add conss, 0 chg bounds, 0 chg sides, 20 chg coeffs, 729 upgd conss, 0 impls, 29862 clqs
+(round 3, medium)     10 del vars, 76 del conss, 93 add conss, 0 chg bounds, 6 chg sides, 32 chg coeffs, 729 upgd conss, 0 impls, 29862 clqs
+(round 4, exhaustive) 10 del vars, 89 del conss, 93 add conss, 0 chg bounds, 6 chg sides, 58 chg coeffs, 729 upgd conss, 0 impls, 29862 clqs
+(round 5, exhaustive) 10 del vars, 89 del conss, 93 add conss, 0 chg bounds, 6 chg sides, 1341 chg coeffs, 729 upgd conss, 0 impls, 29862 clqs
+(round 6, exhaustive) 10 del vars, 102 del conss, 93 add conss, 0 chg bounds, 6 chg sides, 1344 chg coeffs, 729 upgd conss, 0 impls, 29864 clqs
+presolving (7 rounds: 7 fast, 6 medium, 5 exhaustive):
+ 10 deleted vars, 102 deleted constraints, 93 added constraints, 0 tightened bounds, 0 added holes, 6 changed sides, 1344 changed coefficients
+ 0 implications, 29864 cliques
+presolved problem has 7210 variables (7210 bin, 0 int, 0 impl, 0 cont) and 16062 constraints
+    246 constraints of type <knapsack>
+  14320 constraints of type <setppc>
+    504 constraints of type <linear>
+    992 constraints of type <logicor>
+transformed objective value is always integral (scale: 1)
+Presolving Time: 2.00
+transformed 2/2 original solutions to the transformed problem space
+
+SCIP Status        : problem is solved [optimal solution found]
+Solving Time (sec) : 2053.00
+Solving Nodes      : 1 (total of 2635 nodes in 2 runs)
+Primal Bound       : +1.30000000000000e+01 (3 solutions)
+Dual Bound         : +1.30000000000000e+01
+Gap                : 0.00 %
+Estado de optimización: optimal
+
+Horarios de inicio de turnos por empleado:
+          Turno 1  Turno 2  Turno 3  Turno 4  Turno 5  Turno 6  Turno 7  Turno 8  Turno 9  Turno 10
+Empleado                                                                                           
+1               7       31       55       79      103      175      199      223      247       319
+3              11       35       59       83      107      131      155      179      227       251
+4              10       82      106      130      154      202      226      250      274       322
+5              33      105      129      153      177      225      249      273      297       321
+6              12       36       60       84      204      228      252      276      300       324
+8              12       60       84      108      180      204      228      252      276       324
+10              3       75       99      123      147      171      195      219      291       315
+11              6       30       54      102      126      198      222      246      270       294
+12             69       93      117      141      165      189      213      285      309       333
+13              0       24       48       72      120      144      240      264      288       312
+16             39       63       87      135      159      183      207      231      303       327
+18             18       42      114      138      162      234      258      282      306       330
+19             30       78      102      150      174      198      222      246      270       318
+
+Cantidad de trabajadores necesarios para atender todas las llamadas: 13
+
+Process finished with exit code 0
