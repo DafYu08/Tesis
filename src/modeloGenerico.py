@@ -23,7 +23,7 @@ class InstanciaEstacionServicioModif():
 
 def cargar_instancia():
 
-    nombre_archivo = "DEMANDAS/mucho_horario_laboral_finde_media_fuera_poco.xlsx"
+    nombre_archivo = "C:/Users/DAFNE/OneDrive/Documentos/GitHub/Tesis/DEMANDAS/vie_sa_mediodia_tarde.xlsx"
 
     # Crea la instancia vacía
     instancia = InstanciaEstacionServicioModif()
@@ -94,7 +94,7 @@ def agregar_elementos_modif(prob, instancia):
         prob.addCons(expr == 0)
     '''
 
-    #Agregamos la restricción opcional del inciso 4: cada empleado contratado arranca todos sus turnos a la misma hora
+    #Agregamos la restricción opcional: cada empleado contratado arranca todos sus turnos a la misma hora
     w_dict = {}
 
     #Creamos las w_ih
@@ -171,7 +171,6 @@ def main():
     empleados_necesarios = prob.getObjVal()
     # Mostrar los resultados
     mostrar_resultados(prob, instancia, x_dict, e_dict)
-
 
 if __name__ == '__main__':
     main()
