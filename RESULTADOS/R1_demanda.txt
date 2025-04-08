@@ -1,0 +1,94 @@
+presolving:
+(round 1, fast)       168 del vars, 188 del conss, 0 add conss, 168 chg bounds, 157 chg sides, 0 chg coeffs, 0 upgd conss, 0 impls, 6700 clqs
+(round 2, exhaustive) 168 del vars, 188 del conss, 0 add conss, 168 chg bounds, 157 chg sides, 0 chg coeffs, 9748 upgd conss, 0 impls, 6700 clqs
+(round 3, medium)     168 del vars, 3068 del conss, 5760 add conss, 168 chg bounds, 157 chg sides, 0 chg coeffs, 9748 upgd conss, 0 impls, 12460 clqs
+(round 4, exhaustive) 168 del vars, 3068 del conss, 5760 add conss, 168 chg bounds, 157 chg sides, 0 chg coeffs, 12628 upgd conss, 0 impls, 12460 clqs
+(round 5, exhaustive) 168 del vars, 11444 del conss, 8552 add conss, 168 chg bounds, 157 chg sides, 0 chg coeffs, 12628 upgd conss, 0 impls, 12460 clqs
+   (1.0s) probing: 1000/6260 (16.0%) - 0 fixings, 0 aggregations, 19776 implications, 0 bound changes
+   (1.0s) probing: 1001/6260 (16.0%) - 0 fixings, 0 aggregations, 19796 implications, 0 bound changes
+   (1.0s) probing aborted: 1000/1000 successive useless probings
+   (1.0s) symmetry computation started: requiring (bin +, int +, cont +), (fixed: bin -, int -, cont -)
+   (1.0s) symmetry computation finished: 12 generators found (max: 1500, log10 of symmetry group size: 0.0) (symcode time: 0.00)
+dynamic symmetry handling statistics:
+   orbitopal reduction:        1 components: 313x13
+   orbital reduction:         no components
+   lexicographic reduction:   no permutations
+handled 1 out of 1 symmetry components
+presolving (6 rounds: 6 fast, 5 medium, 4 exhaustive):
+ 168 deleted vars, 11448 deleted constraints, 8552 added constraints, 168 tightened bounds, 0 added holes, 157 changed sides, 0 changed coefficients
+ 0 implications, 32256 cliques
+presolved problem has 6260 variables (6260 bin, 0 int, 0 impl, 0 cont) and 9940 constraints
+     80 constraints of type <knapsack>
+   6876 constraints of type <setppc>
+   2792 constraints of type <and>
+     20 constraints of type <linear>
+    172 constraints of type <logicor>
+transformed objective value is always integral (scale: 1)
+Presolving Time: 1.00
+
+ time | node  | left  |LP iter|LP it/n|mem/heur|mdpt |vars |cons |rows |cuts |sepa|confs|strbr|  dualbound   | primalbound  |  gap   | compl.
+  3.0s|     1 |     0 | 12186 |     - |   137M |   0 |6260 |  10k|  12k|   0 |  0 | 359 |   0 |-7.400000e+01 |      --      |    Inf | unknown
+o 4.0s|     1 |     0 | 15422 |     - |feaspump|   0 |6260 |  10k|  12k|   0 |  0 | 359 |   0 |-7.400000e+01 | 1.600000e+01 |    Inf | unknown
+  4.0s|     1 |     0 | 15914 |     - |   141M |   0 |6260 |  10k|  12k| 200 |  1 | 439 |   0 |-7.400000e+01 | 1.600000e+01 |    Inf | unknown
+  5.0s|     1 |     0 | 16122 |     - |   149M |   0 |6260 |  10k|  13k| 336 |  2 | 439 |   0 |-7.400000e+01 | 1.600000e+01 |    Inf | unknown
+  5.0s|     1 |     0 | 16619 |     - |   151M |   0 |6260 |  10k|  13k| 465 |  3 | 439 |   0 |-7.400000e+01 | 1.600000e+01 |    Inf | unknown
+  6.0s|     1 |     0 | 18390 |     - |   162M |   0 |6260 |  10k|  13k| 656 |  4 | 439 |   0 |-7.400000e+01 | 1.600000e+01 |    Inf | unknown
+  8.0s|     1 |     0 | 25356 |     - |   168M |   0 |6260 |  10k|  13k| 870 |  5 | 439 |   0 |-7.400000e+01 | 1.600000e+01 |    Inf | unknown
+  9.0s|     1 |     0 | 28014 |     - |   171M |   0 |6260 |  10k|  13k|1081 |  6 | 439 |   0 |-7.400000e+01 | 1.600000e+01 |    Inf | unknown
+ 12.0s|     1 |     0 | 35355 |     - |   177M |   0 |6260 |  10k|  13k|1263 |  7 | 439 |   0 |-7.400000e+01 | 1.600000e+01 |    Inf | unknown
+ 13.0s|     1 |     0 | 39751 |     - |   179M |   0 |6260 |  10k|  14k|1477 |  8 | 439 |   0 |-7.400000e+01 | 1.600000e+01 |    Inf | unknown
+ 15.0s|     1 |     0 | 44957 |     - |   184M |   0 |6260 |  10k|  14k|1662 |  9 | 439 |   0 |-7.400000e+01 | 1.600000e+01 |    Inf | unknown
+ 16.0s|     1 |     0 | 48388 |     - |   189M |   0 |6260 |  10k|  14k|1840 | 10 | 439 |   0 |-7.400000e+01 | 1.600000e+01 |    Inf | unknown
+ 18.0s|     1 |     0 | 52563 |     - |   190M |   0 |6260 |  10k|  14k|2014 | 11 | 439 |   0 |-7.400000e+01 | 1.600000e+01 |    Inf | unknown
+ 19.0s|     1 |     0 | 56420 |     - |   191M |   0 |6260 |  10k|  14k|2191 | 12 | 439 |   0 |-7.400000e+01 | 1.600000e+01 |    Inf | unknown
+ 19.0s|     1 |     0 | 58124 |     - |   194M |   0 |6260 |  10k|  14k|2361 | 13 | 440 |   0 |-7.400000e+01 | 1.600000e+01 |    Inf | unknown
+ time | node  | left  |LP iter|LP it/n|mem/heur|mdpt |vars |cons |rows |cuts |sepa|confs|strbr|  dualbound   | primalbound  |  gap   | compl.
+ 20.0s|     1 |     0 | 60809 |     - |   195M |   0 |6260 |  10k|  15k|2506 | 14 | 440 |   0 |-7.400000e+01 | 1.600000e+01 |    Inf | unknown
+ 23.0s|     1 |     0 | 65952 |     - |   199M |   0 |6260 |  10k|  15k|2693 | 15 | 440 |   0 |-7.400000e+01 | 1.600000e+01 |    Inf | unknown
+d24.0s|     1 |     0 | 70716 |     - |conflict|   0 |6260 |  10k|  15k|   0 | 15 | 540 |   0 |-7.400000e+01 |-2.500000e+01 | 196.00%| unknown
+ 24.0s|     1 |     0 | 71542 |     - |   199M |   0 |6260 |  10k|  15k|2693 | 15 | 540 |   0 |-7.400000e+01 |-2.500000e+01 | 196.00%| unknown
+ 25.0s|     1 |     0 | 72551 |     - |   201M |   0 |6260 |  10k|  15k|2856 | 16 | 540 |   0 |-7.400000e+01 |-2.500000e+01 | 196.00%| unknown
+ 25.0s|     1 |     0 | 72881 |     - |   201M |   0 |6260 |  10k|  15k|2863 | 17 | 540 |   0 |-7.400000e+01 |-2.500000e+01 | 196.00%| unknown
+ 27.0s|     1 |     2 | 72954 |     - |   202M |   0 |6260 |  10k|  15k|2863 | 17 | 540 |  34 |-7.400000e+01 |-2.500000e+01 | 196.00%| unknown
+r 165s|    48 |    47 |354622 |6128.3 |shifting|  10 |6260 |  10k|  15k|  12k|  0 | 540 |1229 |-7.050000e+01 |-4.600000e+01 |  53.26%| unknown
+d 226s|    56 |    57 |467087 |7281.7 |adaptive|  10 |6260 |  10k|  16k|   0 |  2 | 540 |1361 |-7.050000e+01 |-4.800000e+01 |  46.88%| unknown
+o 327s|    70 |    71 |709503 |9317.6 |objpscos|  11 |6260 |  10k|  16k|  16k|  3 | 546 |1482 |-7.050000e+01 |-5.800000e+01 |  21.55%| unknown
+  460s|   100 |   101 |987304 |9300.1 |   306M |  11 |6260 |  10k|  16k|  19k|  6 | 562 |1671 |-6.800000e+01 |-5.800000e+01 |  17.24%| unknown
+d 581s|   140 |    70 |  1281k|8743.9 |pscostdi|  14 |6260 |  10k|  16k|   0 |  1 | 570 |1830 |-6.800000e+01 |-6.000000e+01 |  13.33%|  23.11%
+  680s|   200 |    33 |  1504k|7226.2 |   353M |  14 |6260 |  10k|  17k|  24k|  0 | 644 |2012 |-6.633333e+01 |-6.000000e+01 |  10.56%|  64.26%
+
+SCIP Status        : problem is solved [optimal solution found]
+Solving Time (sec) : 687.00
+Solving Nodes      : 231
+Primal Bound       : -6.00000000000000e+01 (12 solutions)
+Dual Bound         : -6.00000000000000e+01
+Gap                : 0.00 %
+Estado de optimización: optimal
+
+Horarios de inicio de turnos por empleado:
+          Turno 1  Turno 2  Turno 3  Turno 4  Turno 5
+Empleado
+0               6       30       54       78      102
+1               6       30       54       78      102
+2              30       54       78      102      126
+3               6       30       54       78      102
+4               6       30       54       78      102
+5              18       42       66       90      114
+6              30       54       78      102      126
+7              54       78      102      126      150
+8              12       36       60       84      108
+9              66       90      114      138      162
+10             60       84      108      132      156
+11             24       48       72       96      120
+12             17       41       65       89      113
+13             23       47       71       95      119
+14             48       72       96      120      144
+15             19       43       67       91      115
+16              0       24       48       72       96
+17             18       42       66       90      114
+18              1       25       49       73       97
+19             12       36       60       84      108
+
+Cantidad de trabajadores necesarios para atender todas las llamadas: 20
+
+Process finished with exit code 0
