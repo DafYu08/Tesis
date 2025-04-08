@@ -90,35 +90,34 @@ def agregar_elementos_modif(prob, instancia):
     '''
     A partir de acá empiezan las restricciones deseables
     '''
-    deltas = [0,1]
-
-    #Restricción deseable 0: cada empleado contratado arranca todos sus turnos a la misma hora
-    if deltas[0] == 1:
-        w_dict = {}
-
-        #Creamos las w_ih
-        for i in range(cantMaxEmpleados):
-            w_dict[i] = {}
-            for h in range(24): #Las horas de 0 a 23
-                w_dict[i][h] = prob.addVar(vtype='B', name=f"w_{i}_{h}", lb=0, ub=1)
-
-        #Definimos cada w_ih
-        for i in range(cantMaxEmpleados):
-            for h in range(24):
-                suma_x_i_hd = sum(x_dict[i][h + 24 * d] for d in range(int(cantHoras / 24)))  # Sumamos los turnos de cada día
-                prob.addCons(instancia.dias_laborales * w_dict[i][h] == suma_x_i_hd)
+    deltas = [1/6,0,0,0]
 
     #Restricción deseable 1: Maximizar la cantidad de veces que un empleado empieza su turno en el mismo horario que el día anterior.
     #Creamos las A_{i,h,d}
-    a_dict = {}
-    for i in range(cantMaxEmpleados):
-        a_dict[i] = {}
-        for h in range(24):
-            a_dict[i][h] = {}
-            for d in range(1, int(cantHoras / 24)): #las defino a partir del día 2
-                a_dict[i][h][d] = prob.addVar(vtype='B', name=f"a_{i}_{h}_{d}", lb=0, ub=1)
-                prob.addCons(2 * a_dict[i][h][d] <= x_dict[i][h + 24*d] + x_dict[i][h + 24 * (d-1)])
-                prob.addCons(x_dict[i][h + 24*d] + x_dict[i][h + 24 * (d-1)] <= 1 + a_dict[i][h][d])
+    if deltas[0] == 0:
+        a_dict = {}
+        for i in range(cantMaxEmpleados):
+            a_dict[i] = {}
+            for h in range(24):
+                a_dict[i][h] = {}
+                for d in range(1, int(cantHoras / 24)): #las defino a partir del día 2
+                    a_dict[i][h][d] = prob.addVar(vtype='B', name=f"a_{i}_{h}_{d}", lb=0, ub=1)
+                    prob.addCons(2 * a_dict[i][h][d] <= x_dict[i][h + 24*d] + x_dict[i][h + 24 * (d-1)])
+                    prob.addCons(x_dict[i][h + 24*d] + x_dict[i][h + 24 * (d-1)] <= 1 + a_dict[i][h][d])
+
+    # Restricción deseable 4: Maximizar la cantidad de empleados que empiezan siempre a la misma hora.
+    if deltas[3] != 0:
+        w_dict = {}
+        # Creamos las w_ih
+        for i in range(cantMaxEmpleados):
+            w_dict[i] = {}
+            for h in range(24):  # Las horas de 0 a 23
+                w_dict[i][h] = prob.addVar(vtype='B', name=f"w_{i}_{h}", lb=0, ub=1)
+                suma_x_i_hd = sum(
+                    x_dict[i][h + 24 * d] for d in range(int(cantHoras / 24)))  # Sumamos los turnos de cada día
+                prob.addCons(instancia.dias_laborales * w_dict[i][h] == suma_x_i_hd)
+
+    #Restricción deseable 5: Fijar un horario de entrada para cada empleado, y minimizar las horas totales de diferencia con ese horario de entrada máximo.
 
     #FUNCION OBJETIVO
     objetivo_a = sum(
@@ -128,8 +127,9 @@ def agregar_elementos_modif(prob, instancia):
         )
         for i in range(cantMaxEmpleados)
     )
+    objetivo_w = sum(sum(w_dict[i][h] for h in range(24)) for i in range(cantMaxEmpleados))
 
-    funcion_objetivo = sum(e_dict[i] for i in e_dict) - deltas[1] * objetivo_a
+    funcion_objetivo = sum(e_dict[i] for i in e_dict) - deltas[0] * objetivo_a - deltas[3] * objetivo_w
     prob.setObjective(funcion_objetivo , "minimize") #Luego del inciso opcional, se mantiene esta función objetivo
 
     return x_dict, e_dict
