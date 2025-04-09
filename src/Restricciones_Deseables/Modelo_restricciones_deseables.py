@@ -90,11 +90,11 @@ def agregar_elementos_modif(prob, instancia):
     '''
     A partir de acá empiezan las restricciones deseables
     '''
-    deltas = [1/6,0,0,0]
+    deltas = [1/101,0,0,0]
 
     #Restricción deseable 1: Maximizar la cantidad de veces que un empleado empieza su turno en el mismo horario que el día anterior.
     #Creamos las A_{i,h,d}
-    if deltas[0] == 0:
+    if deltas[0] != 0:
         a_dict = {}
         for i in range(cantMaxEmpleados):
             a_dict[i] = {}
@@ -120,14 +120,18 @@ def agregar_elementos_modif(prob, instancia):
     #Restricción deseable 5: Fijar un horario de entrada para cada empleado, y minimizar las horas totales de diferencia con ese horario de entrada máximo.
 
     #FUNCION OBJETIVO
-    objetivo_a = sum(
-        sum(
-            sum(a_dict[i][h][d] for d in range(1, int(cantHoras / 24)))
-            for h in range(24)
+    objetivo_a = 0
+    if deltas[0] != 0:
+        objetivo_a = sum(
+            sum(
+                sum(a_dict[i][h][d] for d in range(1, int(cantHoras / 24)))
+                for h in range(24)
+            )
+            for i in range(cantMaxEmpleados)
         )
-        for i in range(cantMaxEmpleados)
-    )
-    objetivo_w = sum(sum(w_dict[i][h] for h in range(24)) for i in range(cantMaxEmpleados))
+    objetivo_w = 0
+    if deltas[3] != 0:
+        objetivo_w = sum(sum(w_dict[i][h] for h in range(24)) for i in range(cantMaxEmpleados))
 
     funcion_objetivo = sum(e_dict[i] for i in e_dict) - deltas[0] * objetivo_a - deltas[3] * objetivo_w
     prob.setObjective(funcion_objetivo , "minimize") #Luego del inciso opcional, se mantiene esta función objetivo
