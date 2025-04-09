@@ -1,0 +1,92 @@
+Resultado:
+El solver termina
+cantMaxEmpleados = 20
+RD4 20 veces más pesada que minimizar E, por lo que fija E = 20 y hace toda la asignación con eso. Después se fija si lo puede ir bajando más iterativamente hasta llegar a 12.
+Solving Time (sec) : 23.00
+Horarios de inicio de turnos por empleado:
+          Turno 1  Turno 2  Turno 3  Turno 4  Turno 5
+Empleado
+0              30       54       78      102      126
+1               9       33       57      105      153
+2               2       50       74       98      146
+3              17       65       89      113      137
+4              21       45       69       93      117
+5               6       30       54       78      150
+6               4       52       76      100      124
+7              11       59       83      107      131
+8              15       39       63       87      159
+9               0       24       72      120      144
+12             43       67      115      139      163
+15             13       37       61       85      109
+
+Cantidad de trabajadores necesarios para atender todas las llamadas: 12
+
+Detalle:
+C:\Users\DAFNE\AppData\Local\Microsoft\WindowsApps\python3.11.exe C:\Users\DAFNE\OneDrive\Documentos\GitHub\Tesis\src\Restricciones_Deseables\Modelo_restricciones_deseables.py
+presolving:
+(round 1, fast)       168 del vars, 188 del conss, 0 add conss, 168 chg bounds, 157 chg sides, 0 chg coeffs, 0 upgd conss, 0 impls, 6700 clqs
+(round 2, exhaustive) 168 del vars, 188 del conss, 0 add conss, 168 chg bounds, 157 chg sides, 0 chg coeffs, 6868 upgd conss, 0 impls, 6700 clqs
+   (0.0s) probing: 531/3860 (13.8%) - 0 fixings, 0 aggregations, 3360 implications, 0 bound changes
+   (0.0s) probing aborted: 50/50 successive totally useless probings
+   (0.0s) symmetry computation started: requiring (bin +, int +, cont +), (fixed: bin -, int -, cont -)
+   (1.0s) symmetry computation finished: 19 generators found (max: 1500, log10 of symmetry group size: 10.0) (symcode time: 1.00)
+dynamic symmetry handling statistics:
+   orbitopal reduction:        1 components: 193x20
+   orbital reduction:         no components
+   lexicographic reduction:   no permutations
+handled 1 out of 1 symmetry components
+presolving (3 rounds: 3 fast, 2 medium, 2 exhaustive):
+ 168 deleted vars, 192 deleted constraints, 0 added constraints, 168 tightened bounds, 0 added holes, 157 changed sides, 0 changed coefficients
+ 0 implications, 10060 cliques
+presolved problem has 3860 variables (3860 bin, 0 int, 0 impl, 0 cont) and 7364 constraints
+     80 constraints of type <knapsack>
+   6700 constraints of type <setppc>
+    500 constraints of type <linear>
+     84 constraints of type <logicor>
+transformed objective value is always integral (scale: 1)
+Presolving Time: 1.00
+
+ time | node  | left  |LP iter|LP it/n|mem/heur|mdpt |vars |cons |rows |cuts |sepa|confs|strbr|  dualbound   | primalbound  |  gap   | compl.
+  2.0s|     1 |     0 |  9176 |     - |    94M |   0 |3860 |7407 |7364 |   0 |  0 |  43 |   0 |-1.682682e-16 |      --      |    Inf | unknown
+  3.0s|     1 |     0 | 11627 |     - |    99M |   0 |3860 |7407 |7440 |  76 |  1 |  43 |   0 |-1.682682e-16 |      --      |    Inf | unknown
+  3.0s|     1 |     0 | 14129 |     - |   100M |   0 |3860 |7410 |7555 | 191 |  2 |  46 |   0 | 1.341096e-16 |      --      |    Inf | unknown
+  4.0s|     1 |     0 | 17013 |     - |   101M |   0 |3860 |7410 |7651 | 287 |  3 |  46 |   0 | 7.433290e-16 |      --      |    Inf | unknown
+  5.0s|     1 |     0 | 19728 |     - |   103M |   0 |3860 |7413 |7739 | 375 |  4 |  49 |   0 | 7.433290e-16 |      --      |    Inf | unknown
+  7.0s|     1 |     0 | 23852 |     - |   103M |   0 |3860 |7413 |7824 | 460 |  5 |  49 |   0 | 7.433290e-16 |      --      |    Inf | unknown
+  9.0s|     1 |     0 | 29954 |     - |   105M |   0 |3860 |7413 |7906 | 542 |  6 |  49 |   0 | 1.365141e-15 |      --      |    Inf | unknown
+ 10.0s|     1 |     0 | 32610 |     - |   106M |   0 |3860 |7413 |8003 | 639 |  7 |  49 |   0 | 1.365141e-15 |      --      |    Inf | unknown
+ 11.0s|     1 |     0 | 35398 |     - |   107M |   0 |3860 |7413 |8091 | 727 |  8 |  49 |   0 | 1.365141e-15 |      --      |    Inf | unknown
+ 12.0s|     1 |     0 | 38322 |     - |   108M |   0 |3860 |7413 |8166 | 802 |  9 |  49 |   0 | 1.365141e-15 |      --      |    Inf | unknown
+ 13.0s|     1 |     0 | 41403 |     - |   109M |   0 |3860 |7413 |8232 | 868 | 10 |  49 |   0 | 1.365141e-15 |      --      |    Inf | unknown
+ 14.0s|     1 |     0 | 43885 |     - |   109M |   0 |3860 |7414 |8288 | 934 | 11 |  50 |   0 | 1.365141e-15 |      --      |    Inf | unknown
+ 15.0s|     1 |     0 | 47354 |     - |   111M |   0 |3860 |7414 |8356 |1002 | 12 |  50 |   0 | 1.365141e-15 |      --      |    Inf | unknown
+ 17.0s|     1 |     2 | 47453 |     - |   112M |   0 |3860 |7414 |8356 |1002 | 12 |  50 |  13 | 1.734723e-15 |      --      |    Inf | unknown
+d23.0s|    72 |     0 | 77149 | 420.8 |pscostdi|  30 |3860 |7433 |7727 |   0 |  1 |  69 |  13 | 0.000000e+00 | 0.000000e+00 |   0.00%| 100.00%
+
+SCIP Status        : problem is solved [optimal solution found]
+Solving Time (sec) : 23.00
+Solving Nodes      : 72
+Primal Bound       : +0.00000000000000e+00 (1 solutions)
+Dual Bound         : +0.00000000000000e+00
+Gap                : 0.00 %
+Estado de optimización: optimal
+
+Horarios de inicio de turnos por empleado:
+          Turno 1  Turno 2  Turno 3  Turno 4  Turno 5
+Empleado
+0              30       54       78      102      126
+1               9       33       57      105      153
+2               2       50       74       98      146
+3              17       65       89      113      137
+4              21       45       69       93      117
+5               6       30       54       78      150
+6               4       52       76      100      124
+7              11       59       83      107      131
+8              15       39       63       87      159
+9               0       24       72      120      144
+12             43       67      115      139      163
+15             13       37       61       85      109
+
+Cantidad de trabajadores necesarios para atender todas las llamadas: 12
+
+Process finished with exit code 0

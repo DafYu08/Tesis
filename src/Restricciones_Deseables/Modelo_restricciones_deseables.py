@@ -72,11 +72,11 @@ def agregar_elementos_modif(prob, instancia):
                 suma_x_i_j += x_dict[i][j]
         prob.addCons(o_h == suma_x_i_j)
 
-    # Cumplir todos los llamados que lleguen
+    # Cubrir la demanda de clientes
     for h in range(cantHoras):
         prob.addCons( 8 * instancia.llamados_por_hora[h] - 60 * o_dict[h] <= 0 )
 
-    # Restricción: Cada trabajador empieza aprox 5 turnos por semana (y eso en un rato lo voy a restringir más)
+    #Cada trabajador empieza aprox 5 turnos por semana (y eso en un rato lo voy a restringir más)
     for i in range(cantMaxEmpleados):
         expr = sum(x_dict[i][h] for h in range(cantHoras))
         prob.addCons(expr == instancia.dias_laborales * e_dict[i])
@@ -90,7 +90,7 @@ def agregar_elementos_modif(prob, instancia):
     '''
     A partir de acá empiezan las restricciones deseables
     '''
-    deltas = [1/101,0,0,0]
+    deltas = [0,0,0,1/10]
 
     #Restricción deseable 1: Maximizar la cantidad de veces que un empleado empieza su turno en el mismo horario que el día anterior.
     #Creamos las A_{i,h,d}

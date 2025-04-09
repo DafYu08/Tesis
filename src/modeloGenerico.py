@@ -93,7 +93,7 @@ def agregar_elementos_modif(prob, instancia):
         expr = sum(x_dict[i][h] for h in range(164, 168))
         prob.addCons(expr == 0)
     '''
-
+    '''
     #Agregamos la restricción opcional: cada empleado contratado arranca todos sus turnos a la misma hora
     w_dict = {}
 
@@ -108,7 +108,7 @@ def agregar_elementos_modif(prob, instancia):
         for h in range(24):
             suma_x_i_hd = sum(x_dict[i][h + 24 * d] for d in range(int(cantHoras / 24)))  # Sumamos los turnos de cada día
             prob.addCons(instancia.dias_laborales * w_dict[i][h] == suma_x_i_hd)
-
+    '''
     #FUNCION OBJETIVO
     prob.setObjective(sum(e_dict[i] for i in e_dict) , "minimize") #Luego del inciso opcional, se mantiene esta función objetivo
 
