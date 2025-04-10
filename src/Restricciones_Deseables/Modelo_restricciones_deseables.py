@@ -74,7 +74,7 @@ def agregar_elementos_modif(prob, instancia):
 
     # Cubrir la demanda de clientes
     for h in range(cantHoras):
-        prob.addCons( 8 * instancia.llamados_por_hora[h] - 60 * o_dict[h] <= 0 )
+        prob.addCons( 2 * instancia.llamados_por_hora[h] - 60 * o_dict[h] <= 0 )
 
     #Cada trabajador empieza aprox 5 turnos por semana (y eso en un rato lo voy a restringir más)
     for i in range(cantMaxEmpleados):
@@ -90,7 +90,7 @@ def agregar_elementos_modif(prob, instancia):
     '''
     A partir de acá empiezan las restricciones deseables
     '''
-    deltas = [0,0,0,1/10]
+    deltas = [0,0,0,0.5,0]
 
     #Restricción deseable 1: Maximizar la cantidad de veces que un empleado empieza su turno en el mismo horario que el día anterior.
     #Creamos las A_{i,h,d}
@@ -104,6 +104,11 @@ def agregar_elementos_modif(prob, instancia):
                     a_dict[i][h][d] = prob.addVar(vtype='B', name=f"a_{i}_{h}_{d}", lb=0, ub=1)
                     prob.addCons(2 * a_dict[i][h][d] <= x_dict[i][h + 24*d] + x_dict[i][h + 24 * (d-1)])
                     prob.addCons(x_dict[i][h + 24*d] + x_dict[i][h + 24 * (d-1)] <= 1 + a_dict[i][h][d])
+
+    #Restricción deseable 2: Maximizar la cantidad de veces que un empleado empieza su turno en el mismo horario que el turno anterior
+                            #(es decir, si en el medio hubo un franco, respetar el horario del turno antes del franco).
+
+    #Restricción deseable 3: Maximizar la cantidad de veces que un empleado empieza su turno +/- una hora que en el día anterior.
 
     # Restricción deseable 4: Maximizar la cantidad de empleados que empiezan siempre a la misma hora.
     if deltas[3] != 0:
