@@ -1,0 +1,20 @@
+Scip Status: timelimit
+Solving Time: 1800.0
+Solving Nodes: 1376
+Primal Bound: 8.673267326732674
+Dual Bound: 7.8584158415841605
+Gap: 0.10369157112259018
+
+Cantidad de trabajadores: 9
+Horarios de inicio de turnos por empleado:
+          Turno 1  Turno 2  Turno 3  Turno 4  Turno 5
+Empleado                                             
+0              36       60       84      108      132
+2              16       40      104      128      152
+6               8       32       56       80      104
+7               0       24       48       72       96
+9              63       87      111      135      159
+11             14       38       79      103      127
+12             48       72       96      120      144
+15              7       31       55      127      151
+18             64       88      112      136      160

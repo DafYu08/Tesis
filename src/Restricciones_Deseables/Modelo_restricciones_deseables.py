@@ -108,14 +108,10 @@ def agregar_elementos_modif(prob, instancia, RD_elegida: int, tasa_atencion_clie
     '''
     deltas = [0, 0, 0, 0, 0]
     match RD_elegida:
-        case 1 | 3 | 4:
+        case 1 | 3 | 4 | 5:
             deltas[RD_elegida - 1] = 1 / (instancia.dias_laborales * cantMaxEmpleados + 1)
         case 2:
-            deltas[1] = 0.5
-        case 5:
-            deltas[4] = 1.0
-        case _:
-            print("Valor no reconocido:", RD_elegida)
+            deltas[2] = 0
 
     #Restricción deseable 1: Maximizar la cantidad de veces que un empleado empieza su turno en el mismo horario que el día anterior.
     #Creamos las A_{i,h,d}
@@ -159,8 +155,14 @@ def agregar_elementos_modif(prob, instancia, RD_elegida: int, tasa_atencion_clie
                 prob.addCons(instancia.dias_laborales * w_dict[i][h] == suma_x_i_hd)
 
     #Restricción deseable 5: Fijar un horario de entrada para cada empleado, y minimizar las horas totales de diferencia con ese horario de entrada máximo.
-    #La escribo
-
+    z_i = [16,16,16,0,0,8,8,7,7,14,14,6,15,13,12,17,5,11,9,3]
+    if deltas[4] != 0:
+        y_dict = {}
+        for i in range(cantMaxEmpleados):
+            y_dict[i] = {}
+            for h in range(24):
+                y_dict[i][h] = prob.addVar(vtype='I', name=f"y_{i}_{h}", lb=0)
+                prob.addCons(y_dict[i][h] == sum( x_dict[i][h + 24 * d] for d in range(int(cantHoras / 24))))
 
     #FUNCION OBJETIVO
     objetivo_a = 0
@@ -185,7 +187,11 @@ def agregar_elementos_modif(prob, instancia, RD_elegida: int, tasa_atencion_clie
     if deltas[3] != 0:
         objetivo_w = sum(sum(w_dict[i][h] for h in range(24)) for i in range(cantMaxEmpleados))
 
-    funcion_objetivo = sum(e_dict[i] for i in e_dict) - deltas[0] * objetivo_a - deltas[2] * objetivo_c - deltas[3] * objetivo_w
+    objetivo_y = 0
+    if deltas[4] != 0:
+        objetivo_y = sum(sum(y_dict[i][h] * abs(z_i[i] - h) for h in range(24)) for i in range(cantMaxEmpleados))
+
+    funcion_objetivo = sum(e_dict[i] for i in e_dict) - deltas[0] * objetivo_a - deltas[2] * objetivo_c - deltas[3] * objetivo_w + deltas[4] * objetivo_y
     prob.setObjective(funcion_objetivo , "minimize") #Luego del inciso opcional, se mantiene esta función objetivo
 
     return x_dict, e_dict
@@ -193,7 +199,7 @@ def agregar_elementos_modif(prob, instancia, RD_elegida: int, tasa_atencion_clie
 def resolver_lp(prob):
     # Definir los parametros del solver
     prob.setParam("limits/gap", TOLERANCE)
-    prob.setParam("limits/time", 60) #Media hora por instancia y cada parámetro
+    prob.setParam("limits/time", 1800) #Media hora por instancia y cada parámetro
     # Resolver el lp
     prob.optimize()
 
@@ -221,7 +227,7 @@ def mostrar_resultados(prob: Model, instancia, x_dict, e_dict):
     df_resultados.index.name = "Empleado"
     df_resultados.columns = [f"Turno {j + 1}" for j in range(df_resultados.shape[1])]
 
-    with open(f'C:/Users/DAFNE/OneDrive/Documentos/GitHub/Tesis/RESULTADOS/Resultados_finales/instancia{numero_instancia}_RD{RD_elegida}_tasa{tasa_atencion_clientes}', 'w') as f:
+    with open(f'C:/Users/DAFNE/OneDrive/Documentos/GitHub/Tesis/RESULTADOS/Resultados_finales/RD{RD_elegida}_{int(tasa_atencion_clientes)}/instancia{numero_instancia}_RD{RD_elegida}_tasa{tasa_atencion_clientes}', 'w') as f:
 
         f.write(f"Scip Status: {prob.getStatus()}\n")
         f.write(f"Solving Time: {prob.getSolvingTime()}\n")
