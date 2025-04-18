@@ -1,5 +1,9 @@
-for tasa in 37.02 30 25 20; do
-    for i in $(seq 1 25); do
-        python src/Restricciones_Deseables/Modelo_restricciones_deseables.py $i 5 $tasa
-    done
-done	
+for i in $(seq 13 25); do
+    python src/Restricciones_Deseables/Modelo_restricciones_deseables.py $i 5 25
+done
+	
+for i in $(seq 1 25); do
+    python src/Restricciones_Deseables/Modelo_restricciones_deseables.py $i 5 20
+done
+
+
