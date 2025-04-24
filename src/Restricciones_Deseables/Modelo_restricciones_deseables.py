@@ -58,7 +58,7 @@ def agregar_elementos_modif(prob, instancia, RD_elegida: int, tasa_atencion_clie
             x_dict[i][h] = prob.addVar(vtype='B', name=f"x_{i}_{h}", lb=0, ub=1)
 
     for h in range(cantHoras):
-        o_dict[h] = prob.addVar(vtype='C', name=f"o_{h}", lb=0)
+        o_dict[h] = prob.addVar(vtype='I', name=f"o_{h}", lb=0)
 
     #El empleado i es contratado
     for i in range(cantMaxEmpleados):
@@ -108,10 +108,16 @@ def agregar_elementos_modif(prob, instancia, RD_elegida: int, tasa_atencion_clie
     '''
     deltas = [0, 0, 0, 0, 0]
     match RD_elegida:
-        case 1 | 3 | 4 | 5:
+        case 1 | 2:
             deltas[RD_elegida - 1] = 1 / (instancia.dias_laborales * cantMaxEmpleados + 1)
-        case 2:
-            deltas[2] = 0
+        case 3:
+            deltas[RD_elegida - 1] = 0
+        case 4:
+            deltas[RD_elegida - 1] = 1 / (cantMaxEmpleados + 1)
+        case 5:
+            deltas[RD_elegida - 1] = 1/ (instancia.dias_laborales * cantMaxEmpleados * 12 + 1) #multiplico por 12 porque es la diferencia más grande que se puede tener con el horario elegido
+        case 0:
+            deltas[0] = 0
 
     #Restricción deseable 1: Maximizar la cantidad de veces que un empleado empieza su turno en el mismo horario que el día anterior.
     #Creamos las A_{i,h,d}
@@ -155,7 +161,7 @@ def agregar_elementos_modif(prob, instancia, RD_elegida: int, tasa_atencion_clie
                 prob.addCons(instancia.dias_laborales * w_dict[i][h] == suma_x_i_hd)
 
     #Restricción deseable 5: Fijar un horario de entrada para cada empleado, y minimizar las horas totales de diferencia con ese horario de entrada máximo.
-    z_i = [16,16,16,0,0,8,8,7,7,14,14,6,15,13,12,17,5,11,9,3]
+    z_i = [0,0,16,16,8,8,7,7,15,15,6,14,13,12,5,17,11,3,19,4]
     if deltas[4] != 0:
         y_dict = {}
         for i in range(cantMaxEmpleados):
