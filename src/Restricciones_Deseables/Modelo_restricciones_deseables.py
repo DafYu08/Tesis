@@ -1,6 +1,6 @@
 import pandas as pd
 from debugpy.server.cli import switches
-from pyscipopt import Model
+from pyscipopt import Model,quicksum
 import sys
 
 TOLERANCE = 10e-6
@@ -37,7 +37,7 @@ def cargar_instancia(numero_instancia):
 
 def agregar_elementos_modif(prob, instancia, RD_elegida: int, tasa_atencion_clientes):
     '''
-    Idea: Se piensan variables parecidas a "Bin Packing, en donde tengo n recipientes y quiero llenar la menor cantidad posible"
+    MODELO GENERAL
     Creamos las variables e_i, que son 1 si el empleado responde alguna llamada y 0 sino. Intentamos minimizar la suma de las e_i
     Definimos las variables del problema
     '''
@@ -104,14 +104,14 @@ def agregar_elementos_modif(prob, instancia, RD_elegida: int, tasa_atencion_clie
 
 
     '''
-    A partir de acá empiezan las restricciones deseables
+    RESTRICCIONES DESEABLES
     '''
     deltas = [0, 0, 0, 0, 0]
     match RD_elegida:
         case 1 | 2:
             deltas[RD_elegida - 1] = 1 / (instancia.dias_laborales * cantMaxEmpleados + 1)
         case 3:
-            deltas[RD_elegida - 1] = 0
+            deltas[RD_elegida - 1] = 1 / ((instancia.cantidad_horas/24) * cantMaxEmpleados + 1)
         case 4:
             deltas[RD_elegida - 1] = 1 / (cantMaxEmpleados + 1)
         case 5:
@@ -132,11 +132,8 @@ def agregar_elementos_modif(prob, instancia, RD_elegida: int, tasa_atencion_clie
                     prob.addCons(2 * a_dict[i][h][d] <= x_dict[i][h + 24*d] + x_dict[i][h + 24 * (d-1)])
                     prob.addCons(x_dict[i][h + 24*d] + x_dict[i][h + 24 * (d-1)] <= 1 + a_dict[i][h][d])
 
-    #Restricción deseable 2: Maximizar la cantidad de veces que un empleado empieza su turno en el mismo horario que el turno anterior
-                            #(es decir, si en el medio hubo un franco, respetar el horario del turno antes del franco).
-
-    #Restricción deseable 3: Maximizar la cantidad de veces que un empleado empieza su turno +/- una hora que en el día anterior.
-    if deltas[2] != 0:
+    #Restricción deseable 2: Maximizar la cantidad de veces que un empleado empieza su turno +/- una hora que en el día anterior.
+    if deltas[1] != 0:
         c_dict = {}
         for i in range(cantMaxEmpleados):
             c_dict[i] = {}
@@ -148,6 +145,84 @@ def agregar_elementos_modif(prob, instancia, RD_elegida: int, tasa_atencion_clie
                     prob.addCons(2 * c_dict[i][h][d] <= expr)
                     prob.addCons(expr <= 1 + c_dict[i][h][d])
 
+    # Restricción deseable 3: Maximizar la cantidad de veces que un empleado empieza su turno en el mismo horario que el turno anterior
+    # (es decir, si en el medio hubo un franco, respetar el horario del turno antes del franco).
+
+    if deltas[2] != 0:
+        f_dict = {}
+        l_dict = {}
+
+        #Búsqueda del último franco
+        for i in range(cantMaxEmpleados):
+            f_dict[i] = {}
+            l_dict[i] = {}
+            for d in range(1, int(cantHoras / 24)):
+
+                # Definimos el franco del día d para empleado i
+                f_dict[i][d] = prob.addVar(vtype='I', name=f"f_{i}_{d}", lb=0)
+                prob.addCons(f_dict[i][d] == 1 - quicksum(x_dict[i][h + 24 * d] for h in range(24)))
+                l_dict[i][d] = {}
+                #El último día no franco es exactamente 1 en ese rango
+                variables_validas = []
+                for k in range(1, 6):  # k = 1 to 5
+                    if d - k < 1:
+                        continue  # evitamos índices inválidos
+                    else:
+                        l_dict[i][d][k] = prob.addVar(vtype='B', name=f"l_{i}_{d}_{k}", lb=0, ub=1)
+                        variables_validas.append(k)
+                        # Restricción: l_{i,d,k} ≤ 1 - f_{i,d-k}
+                        prob.addCons(l_dict[i][d][k] <= 1 - f_dict[i][d - k])
+
+                        # Restricciones: l_{i,d,k} ≤ f_{i,d-j} para j = 1,...,k-1
+                        for j in range(1, k):
+                            if d - j < 1:
+                                continue  # evitamos índices inválidos
+                            prob.addCons(l_dict[i][d][k] <= f_dict[i][d - j])
+                prob.addCons(quicksum(l_dict[i][d][k] for k in variables_validas) <= 1)
+
+
+        #Estructura de la restricción conociendo el último franco
+        s_dict = {}
+        m_dict = {}
+        for i in range(cantMaxEmpleados):
+            s_dict[i] = {}
+            m_dict[i] = {}
+            for h in range(24):  # comenzamos en 2 ya que miramos hacia atrás
+                s_dict[i][h] = {}
+                m_dict[i][h] = {}
+                for d in range(2, cantHoras // 24):
+                    # Variable s_{i,d,h}
+                    s_dict[i][h][d] = prob.addVar(vtype='B', name=f"s_{i}_{h}_{d}")
+
+                    # Restricción: s <= x en día d
+                    prob.addCons(s_dict[i][h][d] <= x_dict[i][h + 24 * d])
+
+                    # Restricción: s <= 1 - f_{i,d}
+                    prob.addCons(s_dict[i][h][d] <= 1 - f_dict[i][d])
+
+                    # Acumulador para la suma de m_{i,d,h,k}
+                    m_sum = []
+                    m_dict[i][h][d] = {}
+
+                    for k in range(1, 6):
+                        if d - k < 1:
+                            continue  # evitamos índices negativos
+
+                        # Variable m_{i,d,h,k}
+                        m_var = prob.addVar(vtype='B', name=f"m_{i}_{h}_{d}_{k}")
+                        m_dict[i][h][d][k] = m_var
+                        m_sum.append(m_var)
+
+                        # Turno en el día d-k a la hora h
+                        turno_dk_h = h + 24 * (d - k)
+                        prob.addCons(2 * m_var <= x_dict[i][turno_dk_h] + l_dict[i][d][k])
+                        prob.addCons(x_dict[i][turno_dk_h] + l_dict[i][d][k] <= 1 + m_var)
+
+                    # Restricción: s <= sum_k m_{i,d,h,k}
+                    if m_sum: #Acá chillaba no sé por qué
+                        prob.addCons(s_dict[i][h][d] <= sum(m_sum))
+
+    #la delta en peor caso queda igual que las anteriores debido a que su reducción en días de corrido es la misma cota
     # Restricción deseable 4: Maximizar la cantidad de empleados que empiezan siempre a la misma hora.
     if deltas[3] != 0:
         w_dict = {}
@@ -181,7 +256,7 @@ def agregar_elementos_modif(prob, instancia, RD_elegida: int, tasa_atencion_clie
             for i in range(cantMaxEmpleados)
         )
     objetivo_c = 0
-    if deltas[2] != 0:
+    if deltas[1] != 0:
         objetivo_c = sum(
             sum(
                 sum(c_dict[i][h][d] for d in range(1, int(cantHoras / 24)))
@@ -189,15 +264,23 @@ def agregar_elementos_modif(prob, instancia, RD_elegida: int, tasa_atencion_clie
             )
             for i in range(cantMaxEmpleados)
         )
+    objetivo_s = 0
+    if deltas[2] != 0:
+        objetivo_s = sum(
+            sum(
+                sum(s_dict[i][h][d] for d in range(2, int(cantHoras / 24)))
+                for h in range(24)
+            )
+            for i in range(cantMaxEmpleados)
+        )
     objetivo_w = 0
     if deltas[3] != 0:
         objetivo_w = sum(sum(w_dict[i][h] for h in range(24)) for i in range(cantMaxEmpleados))
-
     objetivo_y = 0
     if deltas[4] != 0:
         objetivo_y = sum(sum(y_dict[i][h] * abs(z_i[i] - h) for h in range(24)) for i in range(cantMaxEmpleados))
 
-    funcion_objetivo = sum(e_dict[i] for i in e_dict) - deltas[0] * objetivo_a - deltas[2] * objetivo_c - deltas[3] * objetivo_w + deltas[4] * objetivo_y
+    funcion_objetivo = sum(e_dict[i] for i in e_dict) - deltas[0] * objetivo_a - deltas[1] * objetivo_c - deltas[2] * objetivo_s - deltas[3] * objetivo_w + deltas[4] * objetivo_y
     prob.setObjective(funcion_objetivo , "minimize") #Luego del inciso opcional, se mantiene esta función objetivo
 
     return x_dict, e_dict
