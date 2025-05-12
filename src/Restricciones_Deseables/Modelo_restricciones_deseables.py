@@ -102,7 +102,6 @@ def agregar_elementos_modif(prob, instancia, RD_elegida: int, tasa_atencion_clie
             prob.addCons(expr <= 5) #Si el empleado fue contratado, por la sabemos que va a ser por igualdad. Sino, va a ser 0. No puede arrancar más de 5
                                     #Obs: la resitricción original no cubría este caso, podían estar todos los francos del mes seguidos.
 
-
     '''
     RESTRICCIONES DESEABLES
     '''
@@ -330,7 +329,6 @@ def mostrar_resultados(prob: Model, instancia, x_dict, e_dict):
 
         f.write("\nHorarios de inicio de turnos por empleado:\n")
         f.write(df_resultados.to_string())
-
 
 def main(numero_instancia, RD_elegida, tasa_atencion_clientes):
     # Lectura de datos desde el archivo de entrada
