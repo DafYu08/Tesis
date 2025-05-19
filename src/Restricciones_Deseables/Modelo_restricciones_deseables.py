@@ -349,7 +349,7 @@ if __name__ == '__main__':
     RD_elegida = int(sys.argv[2])
     tasa_atencion_clientes = float(sys.argv[3])
     assert numero_instancia >= 1 and numero_instancia <= 25
-    assert RD_elegida >= 1 and RD_elegida <= 5
+    assert RD_elegida >= 0 and RD_elegida <= 5
     assert tasa_atencion_clientes in {37.02, 30.0, 25.0, 20.0}
     main(numero_instancia= numero_instancia, RD_elegida = RD_elegida, tasa_atencion_clientes = tasa_atencion_clientes)
 
