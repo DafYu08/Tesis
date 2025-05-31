@@ -138,7 +138,7 @@ def agregar_elementos_modif(prob, instancia, RD_elegida: int, tasa_atencion_clie
             c_dict[i] = {}
             for h in range(24):
                 c_dict[i][h] = {}
-                for d in range(1, int(cantHoras / 24)):  # las defino a partir del día 2
+                for d in range(1, int(cantHoras / 24) - 1):  # las defino a partir del día 2
                     c_dict[i][h][d] = prob.addVar(vtype='B', name=f"a_{i}_{h}_{d}", lb=0, ub=1)
                     expr = x_dict[i][h + 24 * d] + x_dict[i][ (h-1) + 24 * d] + x_dict[i][(h+1) + 24 * d] + x_dict[i][h + 24 * (d - 1)]
                     prob.addCons(2 * c_dict[i][h][d] <= expr)
@@ -258,7 +258,7 @@ def agregar_elementos_modif(prob, instancia, RD_elegida: int, tasa_atencion_clie
     if deltas[1] != 0:
         objetivo_c = sum(
             sum(
-                sum(c_dict[i][h][d] for d in range(1, int(cantHoras / 24)))
+                sum(c_dict[i][h][d] for d in range(1, int(cantHoras / 24) - 1))
                 for h in range(24)
             )
             for i in range(cantMaxEmpleados)
