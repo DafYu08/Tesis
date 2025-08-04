@@ -126,7 +126,7 @@ def agregar_elementos_modif(prob, instancia, RD_elegida: int, tasa_atencion_clie
             a_dict[i] = {}
             for h in range(24):
                 a_dict[i][h] = {}
-                for d in range(1, int(cantHoras / 24)): #las defino a partir del día 2
+                for d in range(1, int(cantHoras / 24)-1): #las defino a partir del día 2
                     a_dict[i][h][d] = prob.addVar(vtype='B', name=f"a_{i}_{h}_{d}", lb=0, ub=1)
                     prob.addCons(2 * a_dict[i][h][d] <= x_dict[i][h + 24*d] + x_dict[i][h + 24 * (d-1)])
                     prob.addCons(x_dict[i][h + 24*d] + x_dict[i][h + 24 * (d-1)] <= 1 + a_dict[i][h][d])
@@ -155,7 +155,7 @@ def agregar_elementos_modif(prob, instancia, RD_elegida: int, tasa_atencion_clie
         for i in range(cantMaxEmpleados):
             f_dict[i] = {}
             l_dict[i] = {}
-            for d in range(1, int(cantHoras / 24)):
+            for d in range(1, int(cantHoras / 24) - 1):
 
                 # Definimos el franco del día d para empleado i
                 f_dict[i][d] = prob.addVar(vtype='I', name=f"f_{i}_{d}", lb=0)
@@ -163,7 +163,7 @@ def agregar_elementos_modif(prob, instancia, RD_elegida: int, tasa_atencion_clie
                 l_dict[i][d] = {}
                 #El último día no franco es exactamente 1 en ese rango
                 variables_validas = []
-                for k in range(1, 6):  # k = 1 to 5
+                for k in range(1, 6):  # k = entre 1 y 5
                     if d - k < 1:
                         continue  # evitamos índices inválidos
                     else:
@@ -189,7 +189,7 @@ def agregar_elementos_modif(prob, instancia, RD_elegida: int, tasa_atencion_clie
             for h in range(24):  # comenzamos en 2 ya que miramos hacia atrás
                 s_dict[i][h] = {}
                 m_dict[i][h] = {}
-                for d in range(2, cantHoras // 24):
+                for d in range(1, int(cantHoras / 24) - 1):
                     # Variable s_{i,d,h}
                     s_dict[i][h][d] = prob.addVar(vtype='B', name=f"s_{i}_{h}_{d}")
 
@@ -232,7 +232,7 @@ def agregar_elementos_modif(prob, instancia, RD_elegida: int, tasa_atencion_clie
                 w_dict[i][h] = prob.addVar(vtype='B', name=f"w_{i}_{h}", lb=0, ub=1)
                 suma_x_i_hd = sum(
                     x_dict[i][h + 24 * d] for d in range(int(cantHoras / 24)))  # Sumamos los turnos de cada día
-                prob.addCons(instancia.dias_laborales * w_dict[i][h] == suma_x_i_hd)
+                prob.addCons(instancia.dias_laborales * w_dict[i][h] >= suma_x_i_hd)
 
     #Restricción deseable 5: Fijar un horario de entrada para cada empleado, y minimizar las horas totales de diferencia con ese horario de entrada máximo.
     z_i = [0,0,16,16,8,8,7,7,15,15,6,14,13,12,5,17,11,3,19,4]
