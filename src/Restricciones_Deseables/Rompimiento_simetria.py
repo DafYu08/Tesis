@@ -232,7 +232,7 @@ def agregar_elementos_modif(prob, instancia, RD_elegida: int, tasa_atencion_clie
                 w_dict[i][h] = prob.addVar(vtype='B', name=f"w_{i}_{h}", lb=0, ub=1)
                 suma_x_i_hd = sum(
                     x_dict[i][h + 24 * d] for d in range(int(cantHoras / 24)))  # Sumamos los turnos de cada día
-                prob.addCons(instancia.dias_laborales * w_dict[i][h] >= suma_x_i_hd)
+                prob.addCons(suma_x_i_hd >= instancia.dias_laborales * w_dict[i][h])
 
     #Restricción deseable 5: Fijar un horario de entrada para cada empleado, y minimizar las horas totales de diferencia con ese horario de entrada máximo.
     z_i = [0,0,16,16,8,8,7,7,15,15,6,14,13,12,5,17,11,3,19,4]
