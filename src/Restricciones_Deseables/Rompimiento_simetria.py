@@ -97,9 +97,7 @@ def agregar_elementos_modif(prob, instancia, RD_elegida: int, tasa_atencion_clie
             prob.addCons(expr <= 5) #Si el empleado fue contratado, por la sabemos que va a ser por igualdad. Sino, va a ser 0. No puede arrancar más de 5
                                     #Obs: la resitricción original no cubría este caso, podían estar todos los francos del mes seguidos.
 
-    #ROMPIMIENTO DE SIMETRÍA
-    for i in range(cantMaxEmpleados-1):
-        prob.addCons(sum(x_dict[i][h] * h for h in range(cantHoras)) <= sum(x_dict[i+1][h] * h for h in range(cantHoras)))
+
 
     '''
     RESTRICCIONES DESEABLES
