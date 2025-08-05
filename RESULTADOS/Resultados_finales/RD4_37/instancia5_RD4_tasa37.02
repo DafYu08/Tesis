@@ -1,19 +1,19 @@
-Scip Status: optimal
-Solving Time: 479.0
-Solving Nodes: 1588
-Primal Bound: 7.619047619047619
-Dual Bound: 7.619047619047619
-Gap: 0.0
+Scip Status: timelimit
+Solving Time: 1800.000389
+Solving Nodes: 4841
+Primal Bound: 7.7142857142857135
+Dual Bound: 6.857142857142859
+Gap: 0.12499999999999951
 
 Cantidad de trabajadores: 8
 Horarios de inicio de turnos por empleado:
           Turno 1  Turno 2  Turno 3  Turno 4  Turno 5
 Empleado                                             
-0               6       30       54       78      126
-1              24       48       96      120      144
-2              40       64      112      136      160
-7              13       37       61       85      133
-8               0       48       72       96      120
-9              16       88      112      136      160
-10              8       80      104      128      152
-14             32       56      104      128      152
+0               8       32       56      128      152
+1               7       61       85      102      135
+3               0       24       96      120      144
+4               8       80      104      128      152
+5              16       40       88      136      160
+7              16       40       64      112      160
+9               0       24       48       72      120
+12             32       55       77      110      138
