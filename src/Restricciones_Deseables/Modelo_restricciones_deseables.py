@@ -25,7 +25,7 @@ class InstanciaEstacionServicioModif():
 
 def cargar_instancia(numero_instancia):
 
-    nombre_archivo = "C:/Users/DAFNE/OneDrive/Documentos/GitHub/Tesis/DEMANDAS/instancias.xlsx"
+    nombre_archivo = "DEMANDAS/instancias.xlsx"
 
     # Crea la instancia vacía
     instancia = InstanciaEstacionServicioModif()
@@ -315,7 +315,7 @@ def mostrar_resultados(prob: Model, instancia, x_dict, e_dict):
     df_resultados.index.name = "Empleado"
     df_resultados.columns = [f"Turno {j + 1}" for j in range(df_resultados.shape[1])]
 
-    with open(f'C:/Users/DAFNE/OneDrive/Documentos/GitHub/Tesis/RESULTADOS/Resultados_finales/RD{RD_elegida}_{int(tasa_atencion_clientes)}/instancia{numero_instancia}_RD{RD_elegida}_tasa{tasa_atencion_clientes}', 'w') as f:
+    with open(f'RESULTADOS/Resultados_finales/RD{RD_elegida}_{int(tasa_atencion_clientes)}/instancia{numero_instancia}_RD{RD_elegida}_tasa{tasa_atencion_clientes}', 'w') as f:
 
         f.write(f"Scip Status: {prob.getStatus()}\n")
         f.write(f"Solving Time: {prob.getSolvingTime()}\n")
