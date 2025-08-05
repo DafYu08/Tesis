@@ -60,11 +60,6 @@ def agregar_elementos_modif(prob, instancia, RD_elegida: int, tasa_atencion_clie
     for h in range(cantHoras):
         o_dict[h] = prob.addVar(vtype='I', name=f"o_{h}", lb=0)
 
-    #El empleado i es contratado
-    for i in range(cantMaxEmpleados):
-        for h in range(cantHoras):
-            prob.addCons(x_dict[i][h] <= e_dict[i])
-
     #Restriccion 0_h: Son los empleados que son contratados y están disponibles para responder llamadas en la hora h
     for h in range(cantHoras):
         o_h = o_dict[h]  # O_h
@@ -78,7 +73,7 @@ def agregar_elementos_modif(prob, instancia, RD_elegida: int, tasa_atencion_clie
     for h in range(cantHoras):
         prob.addCons( (60/tasa_atencion_clientes) * instancia.llamados_por_hora[h] - 60 * o_dict[h] <= 0 )
 
-    #Cada trabajador empieza aporx 5 turnos por semana
+    #Cada trabajador empieza aprox 5 turnos por semana
     for i in range(cantMaxEmpleados):
         expr = sum(x_dict[i][h] for h in range(cantHoras))
         prob.addCons(expr == instancia.dias_laborales * e_dict[i])
@@ -101,6 +96,10 @@ def agregar_elementos_modif(prob, instancia, RD_elegida: int, tasa_atencion_clie
             expr = sum(x_dict[i][h + 168*s] for h in range(168)) #suma de los turnos que se arrancan en una semana (que por la restricción anterior es 1 por día)
             prob.addCons(expr <= 5) #Si el empleado fue contratado, por la sabemos que va a ser por igualdad. Sino, va a ser 0. No puede arrancar más de 5
                                     #Obs: la resitricción original no cubría este caso, podían estar todos los francos del mes seguidos.
+
+    #ROMPIMIENTO DE SIMETRÍA
+    for i in range(cantMaxEmpleados-1):
+        prob.addCons(sum(x_dict[i][h] * h for h in range(cantHoras)) <= sum(x_dict[i+1][h] * h for h in range(cantHoras)))
 
     '''
     RESTRICCIONES DESEABLES
