@@ -25,7 +25,7 @@ class InstanciaEstacionServicioModif():
 
 def cargar_instancia(numero_instancia):
 
-    nombre_archivo = "DEMANDAS/instancias.xlsx"
+    nombre_archivo = "DEMANDAS/instancia_dos_semanas.xlsx"
 
     # Crea la instancia vacía
     instancia = InstanciaEstacionServicioModif()
@@ -96,10 +96,6 @@ def agregar_elementos_modif(prob, instancia, RD_elegida: int, tasa_atencion_clie
             expr = sum(x_dict[i][h + 168*s] for h in range(168)) #suma de los turnos que se arrancan en una semana (que por la restricción anterior es 1 por día)
             prob.addCons(expr <= 5) #Si el empleado fue contratado, por la sabemos que va a ser por igualdad. Sino, va a ser 0. No puede arrancar más de 5
                                     #Obs: la resitricción original no cubría este caso, podían estar todos los francos del mes seguidos.
-
-    #ROMPIMIENTO DE SIMETRÍA
-    for i in range(cantMaxEmpleados-1):
-        prob.addCons(sum(x_dict[i][h] * h for h in range(cantHoras)) <= sum(x_dict[i+1][h] * h for h in range(cantHoras)))
 
     '''
     RESTRICCIONES DESEABLES
@@ -248,7 +244,7 @@ def agregar_elementos_modif(prob, instancia, RD_elegida: int, tasa_atencion_clie
     if deltas[0] != 0:
         objetivo_a = sum(
             sum(
-                sum(a_dict[i][h][d] for d in range(1, int(cantHoras / 24)))
+                sum(a_dict[i][h][d] for d in range(1, int(cantHoras / 24)-1))
                 for h in range(24)
             )
             for i in range(cantMaxEmpleados)
@@ -314,7 +310,7 @@ def mostrar_resultados(prob: Model, instancia, x_dict, e_dict):
     df_resultados.index.name = "Empleado"
     df_resultados.columns = [f"Turno {j + 1}" for j in range(df_resultados.shape[1])]
 
-    with open(f'RESULTADOS/Resultados_finales/SIM/SIM_RD{RD_elegida}_37', 'w') as f:
+    with open(f'RESULTADOS/Resultados_finales/MAS_SEMANAS/2_SEMANAS_RD{RD_elegida}_37', 'w') as f:
 
         f.write(f"Scip Status: {prob.getStatus()}\n")
         f.write(f"Solving Time: {prob.getSolvingTime()}\n")
