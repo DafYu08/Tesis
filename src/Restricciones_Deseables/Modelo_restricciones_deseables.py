@@ -235,6 +235,7 @@ def agregar_elementos_modif(prob, instancia, RD_elegida: int, tasa_atencion_clie
 
     #Restricción deseable 5: Fijar un horario de entrada para cada empleado, y minimizar las horas totales de diferencia con ese horario de entrada máximo.
     z_i = [0,0,16,16,8,8,7,7,15,15,6,14,13,12,5,17,11,3,19,4]
+    z_i.reverse()
     if deltas[4] != 0:
         y_dict = {}
         for i in range(cantMaxEmpleados):
@@ -248,7 +249,7 @@ def agregar_elementos_modif(prob, instancia, RD_elegida: int, tasa_atencion_clie
     if deltas[0] != 0:
         objetivo_a = sum(
             sum(
-                sum(a_dict[i][h][d] for d in range(1, int(cantHoras / 24)))
+                sum(a_dict[i][h][d] for d in range(1, int(cantHoras / 24) - 1))
                 for h in range(24)
             )
             for i in range(cantMaxEmpleados)
@@ -266,7 +267,7 @@ def agregar_elementos_modif(prob, instancia, RD_elegida: int, tasa_atencion_clie
     if deltas[2] != 0:
         objetivo_s = sum(
             sum(
-                sum(s_dict[i][h][d] for d in range(2, int(cantHoras / 24)))
+                sum(s_dict[i][h][d] for d in range(1, int(cantHoras / 24)-1))
                 for h in range(24)
             )
             for i in range(cantMaxEmpleados)
