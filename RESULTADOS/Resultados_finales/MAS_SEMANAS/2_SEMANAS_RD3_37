@@ -1,0 +1,12 @@
+Scip Status: timelimit
+Solving Time: 1800.0
+Solving Nodes: 1
+Primal Bound: 1e+20
+Dual Bound: 6.993594306049823
+Gap: 1e+20
+
+Cantidad de trabajadores: 0
+Horarios de inicio de turnos por empleado:
+Empty DataFrame
+Columns: []
+Index: []
